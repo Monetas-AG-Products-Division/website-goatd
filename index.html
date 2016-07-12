@@ -8,7 +8,7 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="../../favicon.ico">
+    <link rel="icon" href="favicon.ico">
 
     <title>GoatD</title>
 
@@ -23,7 +23,7 @@
 
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
-    <script src="../../assets/js/ie-emulation-modes-warning.js"></script>
+    <!-- <script src="js/ie-emulation-modes-warning.js"></script> -->
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -77,19 +77,110 @@
             "goldgrams": 1000
         }
     }</pre>
+
+</div>
+
+<br />
+
+<div class="inner cover text-left">
+  <p>Need to exchange your Swiss Franc for Gold Grams? Or Bolivars for Bitcoin? It's just another simple transfer. Have a look at all the offers that are availble:</p>
+  <pre>GET /fx/offers</pre>
+  <p>Now build services that scale for the entire planet:</p>
+</div>
+<div class="media">
+  <img class media-object src="img/android.png" width="35%"/><br />
+  <!-- <img class media-object src="img/inverse.png" width="30%"/> -->
+</div>
+
+<br />
+
+    <div class="inner cover text-left">
+                <h3>How does GoatD stack up?</h3>
+                <table class="table">
+                  <tr class="active" style="color:black;">
+                    <td>Technology</td>
+                    <td>Speed</td>
+                    <td>Cost</td>
+                    <td>Visibility</td>
+                  </tr>
+                  <tr>
+                    <td>Monetas</td>
+                    <td>Instant</td>
+                    <td>0.9%, max 0.30CHF</td>
+                    <td>Details are private</td>
+                  </tr>
+                  <tr>
+                    <td>Credit cards</td>
+                    <td>Instant</td>
+                    <td>2-4%, no limit</td>
+                    <td>Details shared with governments and marketers</td>
+                  </tr>
+                  <tr>
+                    <td>Bitcoin</td>
+                    <td>At least 10 minutes</td>
+                    <td>Voluntary, unpredictable</td>
+                    <td>Details available publicly</td>
+                  </tr>
+                </table>
+                <br />
+    <table class="table">
+      <tr class="active" style="color:black;">
+        <td>Technology</td>
+        <td>Developed for</td>
+        <td>Designed for</td>
+        <td>Developer collaboration</td>
+      </tr>
+      <tr>
+        <td>Monetas</td>
+        <td>Enterprise applications</td>
+        <td>Delivering low cost, high performance business solutions and services</td>
+        <td>Open</td>
+      </tr>
+      <tr>
+        <td>Credit cards</td>
+        <td>1950's era department stores</td>
+        <td>Making profits and keeping out competition</td>
+        <td>None</td>
+      </tr>
+      <tr>
+        <td>Bitcoin</td>
+        <td>Freedom</td>
+        <td>Censorship resistance</td>
+        <td>Open</td>
+      </tr>
+    </table>
     <br />
-    <p>There's no public knowledge of the transfer, and it's completely secure and legal, with a digital notary in Switzerland backing you up. How fast? Instant. The cost to your user? 0.9% of the transfer amount, limited to 0.30 CHF (about 0.30 USD).
-    Application developers become Monetas business partners, and earn the majority of the transfer fees that are generated from the Monetas-powered software that they (you) create and distribute.</p>
-    <p>Need to exchange your Swiss Franc for Gold Grams? Or Bolivars for Bitcoin? It's just another simple transfer. Have a look at all the offers that are availble:</p>
-    <pre>GET /fx/offers</pre>
-    <p>And now you can build services that scale for the entire planet:</p>
+    <table class="table">
+      <tr class="active" style="color:black;">
+        <td>Technology</td>
+        <td>Compliance</td>
+        <td>Legality</td>
+        <td>Support</td>
+      </tr>
+      <tr>
+        <td>Monetas</td>
+        <td>Complete AML/KYC</td>
+        <td>Swiss legal notary</td>
+        <td>Monetas AG</td>
+      </tr>
+      <tr>
+        <td>Credit cards</td>
+        <td>Complete AML/KYC</td>
+        <td>Generally US based</td>
+        <td>Banking Institution</td>
+      </tr>
+      <tr>
+        <td>Bitcoin</td>
+        <td>No AML/KYC possible</td>
+        <td>Generally no recognition</td>
+        <td>Online community</td>
+      </tr>
+    </table>
+
 
   </div>
 
-  <div class="media">
-    <img class media-object src="img/android.png" width="35%"/><br />
-    <!-- <img class media-object src="img/inverse.png" width="30%"/> -->
-  </div>
+<br />
 
   <div class="inner cover text-left">
               <h3>Next steps</h3>
@@ -100,7 +191,9 @@
   <li>Build a remittance service</li>
   <li>Create a payroll app, <a href="https://github.com/Monetas-AG-Products-Division/monetas-commercial-payment-spreadsheet"><u>fork our project on Github</u></a></li>
   <li>Create an Internet of Things (IoT) service, and let machines pay each other</li>
-  <li>And anything else you can think of!</li><br />
+  <li>And anything else you can think of!</li>
+  <li>Application developers become Monetas business partners, and earn the majority of the transfer fees that are generated from the Monetas-powered software that they (you) create and distribute.</li>
+    <br />
   <a href="https://goatd.monetas.net/goatd-v1.0.0-172-gd8f3980.tar.gz" class="btn btn-lg btn-danger">Download GoatD Now</a> <br /><br />
   If you'd like to become a partner and make money from the software you build with GoatD, please send us an email! partners@monetas.net
 </ul>
@@ -138,9 +231,9 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
-    <script src="../../dist/js/bootstrap.min.js"></script>
+    <script>window.jQuery || document.write('<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js"><\/script>')</script>
+    <script src="js/bootstrap.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
+    <script src="js/ie10-viewport-bug-workaround.js"></script>
   </body>
 </html>
