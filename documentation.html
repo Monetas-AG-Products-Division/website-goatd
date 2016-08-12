@@ -1,0 +1,425 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="favicon.ico">
+
+    <title>GoatD</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <link href="css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="css/cover.css" rel="stylesheet">
+
+  </head>
+
+  <body>
+
+    <div class="site-wrapper">
+
+      <div class="site-wrapper-inner">
+
+        <div class="cover-container">
+
+          <div class="masthead clearfix">
+            <div class="inner">
+              <!-- <h3 class="masthead-brand">Cover</h3> -->
+              <!-- <nav>
+                <ul class="nav masthead-nav">
+                  <li class="active"><a href="#">Home</a></li>
+                  <li><a href="#">Features</a></li>
+                  <li><a href="#">Contact</a></li>
+                </ul>
+              </nav> -->
+            </div>
+          </div>
+
+          <div class="inner cover">
+            <h1 class="cover-heading">GoatD is your digital wallet.</h1>
+            <p class="lead">Build and ship enterprise cryptofinance applications that run on the Monetas Platform.</p>
+            <p class="lead">
+              <div class="media">
+                <img class media-object src="img/mascot.png" width="25%"/><br />
+                <!-- <img class media-object src="img/inverse.png" width="30%"/> -->
+              </div>
+              <br />
+              <div>
+              <a href="https://goatd.monetas.net/goatd.tar.gz" class="btn btn-lg btn-success">Download GoatD Now</a>&nbsp &nbsp<a href="https://goatd.monetas.net/documentation.html" class="btn btn-lg btn-info">Documentation</a>
+            </div>
+            </p>
+          </div>
+          <br />
+
+
+
+
+
+
+<div class="inner cover text-left">
+
+
+
+  <h1><a id="GoatD_45"></a>GoatD</h1>
+  <p>GoatD is a Notary client which runs as a daemon accepting HTTP JSON requests.
+  It takes care of most of the heavy lifting: signing, message processing,
+  history number allocation, commitment handling.</p>
+  <p>A sketch of the involved moving parts, only the GoatD component is included in
+  this package:<br /><br />
+  <img src="img/goatd_interactions.png" alt="GoatD interactions"></p>
+  <p>GoatD tracks the user’s state using cryptographically strong protocols. If
+  GoatD’s state is lost (e.g. by dropping the Postgres database) then GoatD
+  detects the mismatch with the Notary’s state and refuses to process further
+  messages coming from the Notary. If such a situation should occur while
+  testing/developing GoatD then the quickest way to restore GoatD’s functionality
+  is to generate a fresh key pair and let it be funded again.</p>
+  <h2><a id="Binaries_62"></a>Binaries</h2>
+  <p>In the directory <code>./bin</code> you will find binaries for Linux, Mac and Windows.
+  Whenever you see a binary referenced in this readme the suffix has been dropped
+  for brevity, use the correct one for your platform.</p>
+  <h2><a id="Postgres_setup_68"></a>Postgres setup</h2>
+  <p>Before you get started you’ll need a running Postgres 9.5 database.</p>
+  <h3><a id="Database_creation_72"></a>Database creation</h3>
+  <p>Here, we assume that the a postgres user is setup that has the privilege of
+  creating databases.</p>
+  <p>In the examples that follow in this document, we assume the username to be
+  <code>goat</code> and the database name to be <code>goatdgoat</code>. Of course, you can select your
+  own names.</p>
+  <p>Create a database with:</p>
+  <pre><code class="language-sh">$ psql -U goat -c <span class="hljs-string">'create database goatdgoat'</span>
+  </code></pre>
+  <h3><a id="Setting_up_the_tables_87"></a>Setting up the tables</h3>
+  <p>The required schema can be found in the <code>schema.sql</code>.
+  Import the schema with:</p>
+  <pre><code class="language-sh">$ psql -U goat goatdgoat <span class="hljs-operator">-f</span> schema.sql
+  </code></pre>
+  <h2><a id="Starting_GoatD_96"></a>Starting GoatD</h2>
+  <p>Running GoatD <em>requires</em> a unique ED25519 key pair. The secret key can be
+  generated with the bundled <code>generatekey</code> utility. For example:</p>
+  <pre><code class="language-sh">$ ./generatekey -sk this-should-be<span class="hljs-operator">-a</span>-really-long-string-filled-with-entropy
+  </code></pre>
+  <p>The public key can be derived from the secret key and it is done within GoatD.</p>
+  <p>GoatD has many startup flags. The minimal set is:</p>
+  <ul>
+  <li>client-db-name: the name of the database in which GoatD uses
+  <ul>
+  <li>example: goatdgoat</li>
+  </ul>
+  </li>
+  <li>client-db-user: the database user which GoatD uses
+  <ul>
+  <li>example: goat</li>
+  </ul>
+  </li>
+  <li>client-sk: the secret key which GoatD uses to sign contracts
+  <ul>
+  <li>example: the output of <code>./generatekey -sk your-random-string</code></li>
+  </ul>
+  </li>
+  <li>notary-nym-id: the public identifier of the Notary
+  <ul>
+  <li>example: Am11RgVrjWuCohGMVKDkEFLV2bKDN1MJDzLPRycjtzk1</li>
+  </ul>
+  </li>
+  <li>notary-url: the URL on which the Notary operates
+  <ul>
+  <li>example: <code>https://goatdplatform.monetas.io:8121</code></li>
+  </ul>
+  </li>
+  <li>msghub-url: the URL on which the MsgHub operates
+  <ul>
+  <li>example: <code>https://goatdplatformaux.monetas.io:8456</code></li>
+  </ul>
+  </li>
+  <li>fxdir-url: the URL on which the FX Directory operates
+  <ul>
+  <li>example: <code>https://goatdplatformaux.monetas.io:2356</code></li>
+  </ul>
+  </li>
+  </ul>
+  <p>Starting a minimal GoatD with (substitute your secret key and db name):</p>
+  <pre><code class="language-sh">$ ./goatd -client-db-name goatdgoat \
+    -client-db-user goat \
+    -client-sk your-secret-key \
+    -notary-nym-id Am11RgVrjWuCohGMVKDkEFLV2bKDN1MJDzLPRycjtzk1 \
+    -notary-url https://goatdplatform.monetas.io:<span class="hljs-number">8121</span> \
+    -msghub-url https://goatdplatformaux.monetas.io:<span class="hljs-number">8456</span>
+  </code></pre>
+  <p>That is quite lengthy and is NOT the recommended way of running GoatD, besides
+  being unwieldy this exposes your secret key to anyone else on the computer who
+  is able to inspect running processes.
+  It is therefor recommended to use a <code>flagfile</code>. This file contains pairs of
+  flag=value delimited with new lines. An example is included under the name
+  <code>goatd.conf</code>.</p>
+  <p>You can now run goatd with:</p>
+  <pre><code class="language-sh">$ ./goatd -flagfile ../goatd.conf
+  </code></pre>
+  <h3><a id="Find_the_Notary_Nym_ID_148"></a>Find the Notary Nym ID</h3>
+  <p>You can find the Notary Nym ID in the Unit contracts. These can be queried
+  (for the Notary running on that URL) with:</p>
+  <pre><code class="language-sh">$ curl https://goatdplatform.monetas.io:<span class="hljs-number">8121</span>/v3.<span class="hljs-number">0</span>/units
+  </code></pre>
+  <h2><a id="Examples_157"></a>Examples</h2>
+  <p>The simplest thing you can do is query GoatD about your own Nym ID:</p>
+  <pre><code class="language-sh">$ curl <span class="hljs-number">127.0</span>.<span class="hljs-number">0.1</span>:<span class="hljs-number">2360</span>/v3.<span class="hljs-number">0</span>/nym-id
+  <span class="hljs-string">"FzbrEY5ezDyHt8MADNCmfg2esrQTKDkxGiGiiQtsxn3w"</span>
+  </code></pre>
+  <p>Getting the balances controlled by the running GoatD instance:</p>
+  <pre><code class="language-sh">$ curl <span class="hljs-number">127.0</span>.<span class="hljs-number">0.1</span>:<span class="hljs-number">2360</span>/v3.<span class="hljs-number">0</span>/balance
+  {}
+  </code></pre>
+  <p>Sending 100 units of unit ID <code>568dU...</code> to recipient <code>FzbrEY...</code>:</p>
+  <pre><code class="language-sh">$ curl -XPOST <span class="hljs-number">127.0</span>.<span class="hljs-number">0.1</span>:<span class="hljs-number">2360</span>/v3.<span class="hljs-number">0</span>/transfers <span class="hljs-operator">-d</span> <span class="hljs-string">'{
+    "FzbrEY5ezDyHt8MADNCmfg2esrQTKDkxGiGiiQtsxn3z": {
+      "568dUfJN2vXaKMGrntSsyw5pNVkTwVw34cQ677w4aMoi": 100
+    }
+  }'</span>
+  </code></pre>
+  <h2><a id="Endpoints_183"></a>Endpoints</h2>
+  <p>Each and every request needs to be prefixed with <code>/v3.0</code>, for brevity is this
+  omitted in the descriptions.</p>
+  <p>In these requests and responses we are using a notation in which we prefix a
+  dollar sign ($) to denote a variable. For example <code>$unit1</code> will never actually
+  appear anywhere but it is used as a placeholder. In its place you would see a
+  hash of a document in real life.</p>
+  <h3><a id="Query_Current_balance_193"></a>Query Current balance</h3>
+  <p>This call returns the units and their amounts controlled by this secret key.</p>
+  <h4><a id="Request_197"></a>Request</h4>
+  <pre><code>GET /balance
+  </code></pre>
+  <h4><a id="Response_201"></a>Response</h4>
+  <pre><code>200 OK
+  {
+    &quot;$unti1&quot;: 124,
+    &quot;$unit2&quot;: 43
+  }
+  </code></pre>
+  <h3><a id="Send_Units_209"></a>Send Units</h3>
+  <p>This call tries to send a specific amount of units to an other Nym. Multiple
+  unit/balance pairs can be specified but only one recipient is accepted. All
+  amounts must be positive. Note that fees will be added!</p>
+  <h4><a id="Request_215"></a>Request</h4>
+  <pre><code>POST /transfers?feesType=$feesType
+  {
+      &quot;$recipient&quot;: {
+          &quot;$unitID1&quot;: 123,
+          &quot;$unitID2&quot;: 456
+      }
+  }
+  </code></pre>
+  <p><em>feesType</em> is an optional query parameter and can take one of the following
+  values:</p>
+  <ul>
+  <li><em>fixedOutput</em>: the sender (you) pays the fees and the recipient receives the
+  exact amount of units specified.</li>
+  <li><em>fixedInput</em>: the recipient pays the fees and the exact amount of units
+  specified is deducted from the wallet.</li>
+  </ul>
+  <p>If the parameter is missing, it defaults to <em>fixedOutput</em>.</p>
+  <h4><a id="Response_235"></a>Response</h4>
+  <pre><code>302 Found /transfers/$history_number
+  </code></pre>
+  <p>Or when insufficient funds:</p>
+  <pre><code>400 Bad Request
+  {
+    &quot;code&quot;: &quot;not-enough-funds&quot;
+  }
+  </code></pre>
+  <h3><a id="List_send_Transfers_246"></a>List send Transfers</h3>
+  <p>This will return all the transfers in one long list.</p>
+  <h4><a id="Request_250"></a>Request</h4>
+  <pre><code>GET /transfers
+  </code></pre>
+  <h4><a id="Response_254"></a>Response</h4>
+  <pre><code>200 OK
+  {
+    &quot;history_number&quot;: {
+      &quot;transfer&quot;: {
+        ...
+      }
+      &quot;state&quot;: &quot;$transfer_state&quot;
+    },
+    ...
+  }
+  </code></pre>
+  <p>The list can be empty.
+  <code>transfer_state</code> is one of: <code>cancelled</code>, <code>pending</code>, <code>notarized</code>.</p>
+  <h3><a id="Get_a_Transfer_270"></a>Get a Transfer</h3>
+  <p>A Transfer can also be retrieved by its history number.</p>
+  <h4><a id="Request_274"></a>Request</h4>
+  <pre><code>GET /transfers/$history_number
+  </code></pre>
+  <h4><a id="Response_278"></a>Response</h4>
+  <pre><code>200 OK
+  {
+    see List Transfers
+  }
+  </code></pre>
+  <p>Or</p>
+  <pre><code>404 Not Found
+  </code></pre>
+  <h3><a id="Query_units_289"></a>Query units</h3>
+  <p>This queries the Notary and returns a list of known units. This does not imply
+  any balance.</p>
+  <h4><a id="Request_294"></a>Request</h4>
+  <pre><code>GET /units
+  </code></pre>
+  <h4><a id="Response_298"></a>Response</h4>
+  <pre><code>200 OK
+  {
+    &quot;$unitID&quot;: {
+      $unitcontract
+    },
+    ...
+  }
+  </code></pre>
+  <h3><a id="Query_fees_for_a_particular_amountunit_308"></a>Query fees for a particular amount/unit</h3>
+  <h4><a id="Request_310"></a>Request</h4>
+  <pre><code>GET /fees?unitID=$unitID&amp;amount=$amount&amp;feesType=$feesType
+  </code></pre>
+  <p><em>feesType</em> has the same meaning as in <a href="#send-units">Send Units</a>.</p>
+  <h4><a id="Response_316"></a>Response</h4>
+  <pre><code>200 OK
+  $amount
+  </code></pre>
+  <p>When the UnitID cannot be found</p>
+  <pre><code>404 Not Found
+  </code></pre>
+  <h3><a id="Cancel_transfer_325"></a>Cancel transfer</h3>
+  <p>This cancels a transfer. A Notarized Transfer cannot be canceled. This
+  functionality is only relevant when the other party became unavailable and you
+  want to clean up your liabilities.</p>
+  <h4><a id="Request_331"></a>Request</h4>
+  <pre><code>POST /transfers/$history_number/cancel
+  </code></pre>
+  <h4><a id="Response_335"></a>Response</h4>
+  <pre><code>200 OK
+  </code></pre>
+  <p>Or when transfer <code>$history_number</code> is not found</p>
+  <pre><code>404 Not Found
+  </code></pre>
+  <h3><a id="Query_NymID_343"></a>Query NymID</h3>
+  <p>Informational call only. It will return your own Nym ID.</p>
+  <h4><a id="Request_347"></a>Request</h4>
+  <pre><code>GET /nym-id
+  </code></pre>
+  <h4><a id="Response_351"></a>Response</h4>
+  <pre><code>200 OK
+  &quot;$nym-id&quot;
+  </code></pre>
+  <h3><a id="Query_FX_Offers_356"></a>Query FX Offers</h3>
+  <h4><a id="Request_358"></a>Request</h4>
+  <pre><code>GET /fx/offers
+  </code></pre>
+  <h4><a id="Response_362"></a>Response</h4>
+  <pre><code>200 OK
+  {
+    &quot;$baseUnitID&quot;: {
+      &quot;$quoteUnitID&quot;: [
+        {
+          &quot;rate&quot;: {
+            &quot;numerator&quot;: $numerator,
+            &quot;denominator&quot;: $denominator
+          },
+          &quot;nymID&quot;: $fxProviderNymID,
+          &quot;minimum&quot;: $minimum
+        },
+        ...
+      ]
+    },
+    ...
+  }
+  </code></pre>
+  <p>The response is a collection of FX offers. An Offer represents an FX Provider
+  price for a base unit. The price is defined in the Quote
+  unit. <a href="http://www.investopedia.com/terms/c/currencypair.asp">More information</a>.</p>
+  <p>The conversion rate is specified with a fraction $numerator/$denominator. For
+  example, 1/100 means 1%, i.e. for 100 base units, 101 quote units need to be
+  paid.</p>
+  <p>The <em>$fxProviderNymID</em> specifies the FX provider who will exchange the base
+  units for quote units.</p>
+  <p><em>$minimum</em> specifies the minimum amount of quote units that the FX provider is
+  willing to exchange base units for.</p>
+  <h3><a id="Exchange_Units_396"></a>Exchange Units</h3>
+  <p>This call tries to exchange base units for quote units based on a fixed
+  exchange rate. The rate is determined by the exchanger and can be queried with
+  the <a href="#query-fx-offers">Query FX Offers</a> endpoint.</p>
+  <h4><a id="Request_402"></a>Request</h4>
+  <pre><code>POST /fx/exchange?baseUnitID=$baseUnitID&amp;quoteUnitID=$quoteUnitID&amp;amount=$amount&amp;exchangeType=$exchangeType
+  </code></pre>
+  <p><em>baseUnitID</em> specifies the units to buy.</p>
+  <p><em>quoteUnitID</em> specifies the units to sell.</p>
+  <p><em>exchangeType</em> can take one of the following
+  values:</p>
+  <ul>
+  <li><em>fixedBase</em>: The amount of quote units required are sold in order to buy the
+  exact specified <em>amount</em> of base units is bought.</li>
+  <li><em>fixedQuote</em>: The amount of base units required to sell the exact specified
+  amount of <em>quote</em> units is bought.</li>
+  </ul>
+  <h4><a id="Response_418"></a>Response</h4>
+  <pre><code>302 Found /transfers/$history_number
+  </code></pre>
+  <p>Or when insufficient funds:</p>
+  <pre><code>400 Bad Request
+  {
+    &quot;code&quot;: &quot;not-enough-funds&quot;
+  }
+  </code></pre>
+  <p>Or when no suitable offer has been found (see
+  <a href="#query-fx-offers">Query FX Offers</a>):</p>
+  <pre><code>400 Bad Request
+  {
+    &quot;code&quot;: &quot;exchange-no-offer&quot;
+  }
+  </code></pre>
+  <p>Or when the quote amount is smaller than the minimum specified by the offer:</p>
+  <pre><code>400 Bad Request
+  {
+    &quot;code&quot;: &quot;exchange-minimum&quot;
+  }
+  </code></pre>
+
+
+</div>
+
+
+
+          <div class="inner cover">
+            <div class="inner">
+              <img src="img/inverse.png" width="20%"/><br /><br />
+              <address>
+                Baarerstrasse 53, <br>
+                Switzerland, 6300 Zug<br>
+                <abbr title="Phone"></abbr> +41 41 552 11 33
+              </address>
+
+              <!-- <p>Cover template for <a href="http://getbootstrap.com">Bootstrap</a>, by <a href="https://twitter.com/mdo">@mdo</a>.</p> -->
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js"><\/script>')</script>
+    <script src="js/bootstrap.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="js/ie10-viewport-bug-workaround.js"></script>
+  </body>
+</html>
